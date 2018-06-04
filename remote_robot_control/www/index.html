@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pi Drone</title>
+    
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/modal.css" rel="stylesheet">
+    
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery.joystick.js"></script>
+    <script src="js/sockjs-0.3.min.js"></script>
+    <script src="js/site.js"></script>
+    
+    
+
+  </head>
+
+  <body>
+    <p><img id="camera" src=""/></p>
+    
+    <div class="joystick" id="motor_stick">
+      <div class="inner_circle"></div>
+      <div class="handle"></div>
+    </div>
+    <button id="btnShutdown" type="button" class="btn">Shutdown</button>
+    
+    <div id="modalShutdownDialog">
+        <div class="modal-content">
+            
+            <div class="copy">
+                <p id="shutdownText">Shutting Down</p>
+                <img id="shutdownProgress" src="images/ajax-loader.gif"/>
+            </div>
+        </div>
+        <div class="overlay"></div>
+    </div>
+    
+  </body>
+</html>
