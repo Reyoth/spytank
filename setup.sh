@@ -6,22 +6,11 @@ DEXTERSCRIPT=$PIHOME/Dexter/lib/Dexter/script_tools
 
 source $DEXTERSCRIPT/functions_library.sh
 
-display_welcome_msg() {
-	echo "Special thanks to Joe Sanford at Tufts University. This script was derived from his work. Thank you Joe!"
-}
-
-install_dependencies() {
-
-    # the sudo apt-get update is already
-    # done by the script_tools installer in
-    # update_gopigo.sh
-
-    feedback "Installing dependencies for the GoPiGo"
-    sudo apt-get install git libi2c-dev i2c-tools minicom libnss-mdns build-essential libffi-dev -y
-    sudo apt-get install python-pip python-serial python-rpi.gpio python-smbus python-dev python-numpy -y
-    sudo apt-get install python3-pip python3-serial python3-rpi.gpio python3-smbus python3-dev python3-numpy -y
-
-    feedback "Dependencies installed for the GoPiGo"
+check_connection() {
+    if [ $? -gt 0 ]; then
+        feedback "FAIL!  No internet connection, try later"
+        exit 1
+    fi
 }
 
 check_root_user() {
@@ -29,6 +18,15 @@ check_root_user() {
         feedback "FAIL!  This script must be run as such: sudo ./install.sh"
         exit 1
     fi
+}
+install_dependencies() {
+    sudo apt update
+    feedback "Installing dependencies for the GoPiGo"
+    sudo apt install git libi2c-dev i2c-tools minicom libnss-mdns build-essential libffi-dev -y
+    sudo apt install python-pip python-serial python-rpi.gpio python-smbus python-dev python-numpy -y
+    sudo apt install python3-pip python3-serial python3-rpi.gpio python3-smbus python3-dev python3-numpy -y
+
+    feedback "Dependencies installed for the GoPiGo"
 }
 
 install_spi_i2c() {
@@ -74,36 +72,16 @@ install_spi_i2c() {
     sudo adduser pi i2c
 }
 
-install_avr() {
-  feedback "Installing avrdude for the GoPiGo"
-	source $DEXTERSCRIPT/install_avrdude.sh
-  create_avrdude_folder
-  install_avrdude
-  cd $ROBOT_DIR
-  echo "done with AVRDUDE "
-}
 
-install_control_panel() {
-    cp "$ROBOT_DIR/Software/Python/control_panel/gopigo_control_panel.desktop" $PIHOME/Desktop
-}
 
 ############################################################################
 ############################################################################
-
+check_connection
 check_root_user
 install_dependencies
-
-# copy software servo
-# we might also want to delete $ROBOT_DIR/Firmware/SoftwareServo from the repo for good
-# sudo cp -R $ROBOT_DIR/Firmware/SoftwareServo/ /usr/share/arduino/libraries/
 
 # copy gopigo executable
 # the gopigo executable is for reporting data about the gopigo board
 sudo chmod +x gopigo
 sudo cp gopigo /usr/bin
 install_spi_i2c
-install_avr
-install_control_panel
-
-sudo chmod +x $ROBOT_DIR/Software/Scratch/GoPiGo_Scratch_Scripts/*.sh
- 
