@@ -179,7 +179,6 @@ if __name__ == "__main__":
         ( r"/images/(.*)", tornado.web.StaticFileHandler, { "path": webPath + "/images" } ),
         ( r"/js/(.*)", tornado.web.StaticFileHandler, { "path": webPath + "/js" } ) ] )
     
-    #( r"/(.*)", tornado.web.StaticFileHandler, {"path": scriptPath + "/www" } ) ] \
     
     # Create a camera streamer
     cameraStreamer = camera_streamer.CameraStreamer()
@@ -187,14 +186,13 @@ if __name__ == "__main__":
     # Start connecting to the robot asyncronously
     robotConnectionThread = threading.Thread( target=createRobot, 
         args=[ robotConnectionResultQueue ] )
-        #args=[ robotConfig, robotConnectionResultQueue ] )
     robotConnectionThread.start()
 
     # Now start the web server
     logging.info( "Starting web server..." )
     http_server = tornado.httpserver.HTTPServer( application )
 	
-	#The port number on which the robot control works, change in line 105 in www/index.html too
+	#The port number on which the robot control works, change in line 41 in www/js/site.js too
     http_server.listen( 98 )
     
     robotPeriodicCallback = tornado.ioloop.PeriodicCallback( 

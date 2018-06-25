@@ -20,7 +20,7 @@ import gopigo
 #--------------------------------------------------------------------------------------------------- 
 debug=0
 class RobotController:
-  
+
 	MAX_UPDATE_TIME_DIFF = 0.25
 	TIME_BETWEEN_SERVO_SETTING_UPDATES = 1.0
 	
@@ -62,41 +62,39 @@ class RobotController:
 		return ( joystickX, joystickY )
 
 	def centreNeck( self ):
-		#gopigo.set_right_speed(0)
 		pass
 	
 	def setMotorJoystickPos( self, joystickX, joystickY ):
 		joystickX, joystickY = self.normaliseJoystickData( joystickX, joystickY )
 		if debug:
 			print( "Left joy",joystickX, joystickY)
-			#print self.speed_l*joystickY
-		#gopigo.set_left_speed(int(self.speed_l*joystickY))
-		#gopigo.fwd()
-		if joystickX > .5:
-			print( "Left")
-			gopigo.left()
-		elif joystickX <-.5:
-			print ("Right")
-			gopigo.right()
-		elif joystickY > .5:
-			print ("Fwd")
-			gopigo.fwd()
-		elif joystickY < -.5:
-			print ("Back")
-			gopigo.bwd()
-		else:
-			print ("Stop")
-			gopigo.stop()
+		
+		#Tapez votre code ici.#####################################
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+		#----------------------------------------------------------
 		
 	def setNeckJoystickPos( self, joystickX, joystickY ):
-		#print ("g")
 		joystickX, joystickY = self.normaliseJoystickData( joystickX, joystickY )
 		if debug:	
 			print ("Right joy",joystickX, joystickY)
-			#print (self.speed_r*joystickY)
-		#gopigo.set_right_speed(int(self.speed_r*joystickY))
-		#gopigo.fwd()
-		#self.lastMotionCommandTime = time.time()
 
 	def update( self ):
 		if debug:	
