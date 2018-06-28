@@ -31,18 +31,18 @@ def avance(vitesse):
     sendCmd(motor_fwd_cmd[0], vitesse)
 
 def recule(vitesse):
-    sendCmd(motor_bwd_cmd, vitesse)
+    sendCmd(motor_bwd_cmd[0], vitesse)
 
 def droite(vitesse):
-    sendCmd(right_rot_cmd, vitesse)
+    sendCmd(right_rot_cmd[0], vitesse)
 
 def gauche(vitesse):
-    sendCmd(left_rot_cmd, vitesse)
+    sendCmd(left_rot_cmd[0], vitesse)
 
 def stop():
     sendCmd(stop_cmd)
 
 	
 def sendCmd(cmd, param1=0, param2=0, param3=0):
-    print([cmd, param1, param2, param3])
+    #print([cmd, param1, param2, param3])
     write_i2c_block(address, [cmd, param1, param2, param3])
