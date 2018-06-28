@@ -180,7 +180,7 @@ def motor2(direction,speed):
 	return write_i2c_block(address,m2_cmd+[direction,speed,0])
 
 #Move the GoPiGo forward
-def fwd(dist=0): #distance is in cm
+def fwd(speed,dist=0): #distance is in cm
 	try:
 		if dist>0:
 			# this casting to int doesn't seem necessary
@@ -189,7 +189,7 @@ def fwd(dist=0): #distance is in cm
 	except Exception as e:
 		print ("gopigo fwd: {}".format(e))
 		pass
-	return write_i2c_block(address,motor_fwd_cmd+[0,0,0])
+	return write_i2c_block(address,motor_fwd_cmd,speed[0,0])
 
 # support more explicit spelling for forward function
 forward=fwd
@@ -199,7 +199,7 @@ def motor_fwd():
 	return write_i2c_block(address,motor_fwd_cmd+[0,0,0])
 
 #Move GoPiGo back
-def bwd(dist=0):
+def bwd(speed,dist=0):
 	try:
 		if dist>0:
 			# this casting to int doesn't seem necessary
@@ -208,26 +208,26 @@ def bwd(dist=0):
 	except Exception as e:
 		print ("gopigo bwd: {}".format(e))
 		pass
-	return write_i2c_block(address,motor_bwd_cmd+[0,0,0])
+	return write_i2c_block(address,motor_bwd_cmd,speed[0,0])
 
 # support more explicit spelling for backward function
 backward=bwd
 
 #Move GoPiGo back without PID control
-def motor_bwd():
-	return write_i2c_block(address,motor_bwd_cmd+[0,0,0])
+def motor_bwd(speed):
+	return write_i2c_block(address,motor_bwd_cmd,speed[0,0])
 
 #Turn GoPiGo Left slow (one motor off, better control)
-def left():
-	return write_i2c_block(address,left_cmd+[0,0,0])
+def left(speed):
+	return write_i2c_block(address,left_rot_cmd,speed[0,0])
 
 #Rotate GoPiGo left in same position (both motors moving in the opposite direction)
 def left_rot():
 	return write_i2c_block(address,left_rot_cmd+[0,0,0])
 
 #Turn GoPiGo right slow (one motor off, better control)
-def right():
-	return write_i2c_block(address,right_cmd+[0,0,0])
+def right(speed):
+	return write_i2c_block(address,right_cmd,speed[0,0])
 
 #Rotate GoPiGo right in same position both motors moving in the opposite direction)
 def right_rot():
