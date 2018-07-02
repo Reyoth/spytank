@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 from __future__ import print_function
 from __future__ import division
@@ -69,24 +69,22 @@ class RobotController:
 		joystickX, joystickY = self.normaliseJoystickData( joystickX, joystickY )
 		if debug:
 			print( "Left joy",joystickX, joystickY)
-			#print self.speed_l*joystickY
-		#gopigo.set_left_speed(int(self.speed_l*joystickY))
-		#gopigo.fwd()
-		if joystickX > .5:
-			print( "Left")
-			gopigo.left()
-		elif joystickX <-.5:
-			print ("Right")
-			gopigo.right()
-		elif joystickY > .5:
+		
+		if joystickX > 0.5:
+			print( "Right")
+			gopigo.left(50)
+		elif joystickX <-0.5:
+			print ("Left")
+			gopigo.right50
+		elif joystickY > 0.5:
 			print ("Fwd")
-			gopigo.fwd()
-		elif joystickY < -.5:
+			gopigo.fwd(80)
+		elif joystickY < -0.5:
 			print ("Back")
-			gopigo.bwd()
+			gopigo.bwd(80)
 		else:
 			print ("Stop")
-			gopigo.stop()
+			gopigo.fwd(0)
 		
 	def setNeckJoystickPos( self, joystickX, joystickY ):
 		#print ("g")
