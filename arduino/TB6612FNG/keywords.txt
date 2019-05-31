@@ -1,0 +1,5 @@
+Motor	KEYWORD1
+begin	KEYWORD2
+halt	KEYWORD2
+getPwmValue	KEYWORD2
+actuate	KEYWORD2

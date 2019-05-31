@@ -1,0 +1,8 @@
+ComBus	KEYWORD1
+begin	KEYWORD2
+newMessage	KEYWORD2
+readCmd	KEYWORD2
+readParam1	KEYWORD2
+readParam2	KEYWORD2
+readParam3	KEYWORD2
+sendMessage	KEYWORD2
