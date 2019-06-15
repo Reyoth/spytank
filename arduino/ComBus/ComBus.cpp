@@ -9,7 +9,7 @@ void sendData();
 void receiveData(int byteCount);
 uint8_t id;
 int16_t value;
-
+uint8_t sendIndex;
 
 //********************************************************
 // Class implementation
@@ -26,6 +26,7 @@ void ComBus::begin(void) {
   _param1 = 0;
   _param2 = 0;
   message[0] = 0;
+  sendIndex = 0;
 }
 
 int8_t ComBus::readParam0(void) {
@@ -79,9 +80,24 @@ void receiveData(int byteCount) {
 
 // callback for sending data
 void sendData() {
-	Wire.write(id);
-	Wire.write(value);
-	id = 0;
-	value = 0;
+	switch (sendIndex) {
+		case 0:
+			Wire.write(id);
+			sendIndex++;
+			break;
+		case 1:
+			Wire.write(value & 0x00FF);
+			sendIndex++;
+			break;
+		case 2:
+			Wire.write(value >> 8);
+			id = 0;
+			value = 0;
+			sendIndex = 0;
+			break;
+		default:
+			Wire.write(0);
+	}
+	
 }
 

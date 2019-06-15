@@ -10,9 +10,7 @@ class ComBus {
 private:
   uint8_t _cmd;
   int8_t _param0, _param1, _param2;
-  uint8_t _id;
-  int16_t _value;
-
+  
 public:
   /** Crée un objet bacarComm */
   ComBus ();

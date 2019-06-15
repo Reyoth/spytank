@@ -24,12 +24,12 @@ spytank.droite(150)
 time.sleep(1)
 spytank.stop()
 time.sleep(1)
-spytank.gauche(150)
+print(spytank.gauche(150))
 time.sleep(1)
-spytank.stop()
-time.sleep(1)
+print(spytank.stop())
+##time.sleep(1)
 
-for i in range(10):
+for i in range(1):
     print( "capteur gauche : " + str(spytank.litCapteurGauche()) )
     print( "capteur droit : " + str(spytank.litCapteurDroit()) )
     time.sleep(1)

@@ -35,19 +35,21 @@ PIN_LED1 = 3
 PIN_LED2 = 4
 PIN_LED3 = 5
 # Pattes des capteurs de ligne
-PIN_CAPTEUR_DROIT  = 0
-PIN_CAPTEUR_GAUCHE = 1
+PIN_CAPTEUR_DROIT  = 1
+PIN_CAPTEUR_GAUCHE = 0
 
 
 ########################################################################
 # Definition de l'identifiant des commandes
 ########################################################################
 # Commandes de mouvements
-CMD_STOP   = 0
-CMD_AVANCE = 1
-CMD_RECULE = 2
-CMD_DROITE = 3
-CMD_GAUCHE = 4
+CMD_AVANCE  = 1
+CMD_RECULE  = 2
+CMD_DROITE  = 3
+CMD_GAUCHE  = 4
+CMD_MOTEURS = 5
+CMD_STOP    = 6
+
 CMD_LIT_DISTANCE = 10
 # Commandes generiques
 CMD_DIGITAL_READ  = 20
@@ -74,7 +76,7 @@ def etatGauche():
     etat = litCapteurGauche()
     if etat > 300:
         return 1
-    else if etat >=0:
+    elif etat >=0:
         return 0
     else:
         return -1
@@ -92,7 +94,7 @@ def etatGauche():
     etat = litCapteurDroit()
     if etat > 300:
         return 1
-    else if etat >=0:
+    elif etat >=0:
         return 0
     else:
         return -1
@@ -173,7 +175,7 @@ def stop():
 # Renvoie : 
 #   1, si l'ordre a bien ete envoye
 #  -1, si la communication a echoue 
-def vitMoteurs(vitesseGauche, vitesseDroite)
+def vitMoteurs(vitesseGauche, vitesseDroite):
     return sendCmd(CMD_MOTEURS, vitesseGauche, vitesseDroite)
 
 
@@ -209,8 +211,9 @@ def litDistance():
     sendCmd(CMD_LIT_DISTANCE)
     time.sleep(0.2)
     try:
-        b1 = bus.read_byte(address)
+        id = bus.read_byte(address)
         b0 = bus.read_byte(address)
+        b1 = bus.read_byte(address)
     except IOError:
         return -1
     return b1*256 + b0
@@ -233,6 +236,7 @@ def digitalRead(digitalIn):
     sendCmd(CMD_DIGITAL_READ, digitalIn)
     time.sleep(0.1)
     try:
+        id = bus.read_byte(address)
         b = bus.read_byte(address)
     except IOError:
         return -1
@@ -262,8 +266,9 @@ def analogRead(analogIn):
     sendCmd(CMD_ANALOG_READ, analogIn)
     time.sleep(0.1)
     try:
-        b1 = bus.read_byte(address)
+        id = bus.read_byte(address)
         b0 = bus.read_byte(address)
+        b1 = bus.read_byte(address)
     except IOError:
         return -1
     return b1*256 + b0

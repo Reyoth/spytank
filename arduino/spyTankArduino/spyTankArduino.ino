@@ -1,28 +1,23 @@
-#include <comBus.h>
+#include <ComBus.h>
 #include <motor.h>
 
 
-Motor m1(10, 7, 8);
-Motor m2(9, 11, 12);
+Motor motA(9, 8, 7);
+Motor motB(10, 11, 12);
 ComBus comm;
 
-#define LED0     2
-#define LED1     3
-#define LED2     4
-#define LED3     5
 
-#define LIGNE_G  6
-#define LIGNE_D  7
-
-
-#define CMD_STOP    0
 #define CMD_AVANCE  1
 #define CMD_RECULE  2
 #define CMD_DROITE  3
 #define CMD_GAUCHE  4
 #define CMD_MOTEURS 5
+#define CMD_STOP    6
 
-#define CMD_LIT_DISTANCE 10
+#define LED0 2
+#define LED1 4
+#define LED2 3
+#define LED3 5
 
 #define CMD_DIGITAL_READ  20
 #define CMD_DIGITAL_WRITE 21
@@ -32,9 +27,10 @@ ComBus comm;
 
 
 void setup() {
+  Serial.begin(9600);
   // Initialisation des moteurs
-  m1.begin();
-  m2.begin();
+  motA.begin();
+  motB.begin();
   // Active la patte STBY du TB6612
   pinMode(6, OUTPUT);
   digitalWrite(6, HIGH);
@@ -64,24 +60,28 @@ void loop() {
     }
 	
     if(cmd == CMD_AVANCE) {
-      m1.actuate(comm.readParam0());
-      m2.actuate(comm.readParam0());
+      motA.changeVitesse(comm.readParam0());
+      motB.changeVitesse(comm.readParam0());
     }
     if(cmd == CMD_RECULE) {
-      m1.actuate(-comm.readParam0());
-      m2.actuate(-comm.readParam0());
+      motA.changeVitesse(-comm.readParam0());
+      motB.changeVitesse(-comm.readParam0());
     }
     if(cmd == CMD_GAUCHE) {
-      m1.actuate(comm.readParam0());
-      m2.actuate(-comm.readParam0());
+      motA.changeVitesse(comm.readParam0());
+      motB.changeVitesse(-comm.readParam0());
     }
     if(cmd == CMD_DROITE) {
-      m1.actuate(-comm.readParam0());
-      m2.actuate(comm.readParam0());
+      motA.changeVitesse(-comm.readParam0());
+      motB.changeVitesse(comm.readParam0());
     }
     if(cmd == CMD_STOP) {
-      m1.actuate(0);
-      m2.actuate(0);
+      motA.changeVitesse(0);
+      motB.changeVitesse(0);
+    }
+    if(cmd == CMD_MOTEURS) {
+      motA.changeVitesse(comm.readParam0());
+      motB.changeVitesse(comm.readParam1());
     }
   }
 }

@@ -38,7 +38,7 @@ else:
 address = 0x08
 
 def sendCmd(cmd, param1=0, param2=0, param3=0):
-    write_i2c_block(address, [cmd, param1, param2, param3])
+    return(write_i2c_block(address, [cmd, param1, param2, param3]))
 
 #Write I2C block
 def write_i2c_block(address, block):

@@ -17,28 +17,28 @@ void Motor::begin() {
 }
 
 /** stop Motor **/
-void Motor::halt() {
-  actuate(0);
+void Motor::stop() {
+  changeVitesse(0);
 }
 
-float Motor::getPwmValue() {
+float Motor::vitesseRead() {
   return _pwm_value;
 }
 
-void Motor::actuate(float pwm_value) {
+void Motor::changeVitesse(int vitesse) {
   // First we saturate the input value in the admissible range (-1 -> 1)
-  if (pwm_value < -1) {
-    pwm_value = -1;
-  } else if (pwm_value > 1) {
-    pwm_value = 1;
+  if (vitesse < -255) {
+    vitesse = -255;
+  } else if (vitesse > 255) {
+    vitesse = 255;
   }
-  _pwm_value = pwm_value;
+  _pwm_value = vitesse;
   if (_pwm_value >=0) {
-    analogWrite(pwm_pin, _pwm_value*PWM_MAX);
+    analogWrite(pwm_pin, _pwm_value);
     digitalWrite(in1_pin, HIGH);
     digitalWrite(in2_pin, LOW);
   } else {
-    analogWrite(pwm_pin, (-_pwm_value)*PWM_MAX);
+    analogWrite(pwm_pin, -_pwm_value);
     digitalWrite(in1_pin, LOW);
     digitalWrite(in2_pin, HIGH);
   }
