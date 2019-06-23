@@ -30,6 +30,7 @@ from comBus import *
 # Definition des pattes utilisees de l'Arduino
 ########################################################################
 # Pattes pour les LEDs
+leds = [2, 4, 3, 5]
 PIN_LED0 = 2
 PIN_LED1 = 3
 PIN_LED2 = 4
@@ -109,7 +110,7 @@ def etatGauche():
 #   1, si l'ordre a bien ete envoye
 #  -1, si la communication a echoue  
 def led(ledNum, ledEtat):
-    return digitalWrite(ledNum, ledEtat)
+    return digitalWrite(leds[ledNum], ledEtat)
 
 
 # fait avancer le SpyTank a une vitesse donnee
@@ -212,8 +213,11 @@ def litDistance():
     time.sleep(0.2)
     try:
         id = bus.read_byte(address)
+        print(id)
         b0 = bus.read_byte(address)
+        print (b0)
         b1 = bus.read_byte(address)
+        print(b1)
     except IOError:
         return -1
     return b1*256 + b0

@@ -14,10 +14,14 @@ ComBus comm;
 #define CMD_MOTEURS 5
 #define CMD_STOP    6
 
+#define CMD_DISTANCE 10
+
 #define LED0 2
 #define LED1 4
 #define LED2 3
 #define LED3 5
+#define DISTANCE_PIN  17
+
 
 #define CMD_DIGITAL_READ  20
 #define CMD_DIGITAL_WRITE 21
@@ -27,7 +31,6 @@ ComBus comm;
 
 
 void setup() {
-  Serial.begin(9600);
   // Initialisation des moteurs
   motA.begin();
   motB.begin();
@@ -42,6 +45,7 @@ void setup() {
   pinMode(LED1, OUTPUT);
   pinMode(LED2, OUTPUT);
   pinMode(LED3, OUTPUT);
+  pinMode(DISTANCE_PIN, INPUT);
 }
 
 void loop() {
@@ -55,33 +59,70 @@ void loop() {
     if (cmd == CMD_DIGITAL_WRITE) {
       digitalWrite( comm.readParam0(), comm.readParam1() );
     }
-    if (cmd == CMD_ANALOG_READ) {
+    else if (cmd == CMD_ANALOG_READ) {
       comm.sendMessage( CMD_ANALOG_READ, analogRead( comm.readParam0() ) );
     }
-	
-    if(cmd == CMD_AVANCE) {
+    else if(cmd == CMD_AVANCE) {
       motA.changeVitesse(comm.readParam0());
       motB.changeVitesse(comm.readParam0());
     }
-    if(cmd == CMD_RECULE) {
+    else if(cmd == CMD_RECULE) {
       motA.changeVitesse(-comm.readParam0());
       motB.changeVitesse(-comm.readParam0());
     }
-    if(cmd == CMD_GAUCHE) {
+    else if(cmd == CMD_GAUCHE) {
       motA.changeVitesse(comm.readParam0());
       motB.changeVitesse(-comm.readParam0());
     }
-    if(cmd == CMD_DROITE) {
+    else if(cmd == CMD_DROITE) {
       motA.changeVitesse(-comm.readParam0());
       motB.changeVitesse(comm.readParam0());
     }
-    if(cmd == CMD_STOP) {
+    else if(cmd == CMD_STOP) {
       motA.changeVitesse(0);
       motB.changeVitesse(0);
     }
-    if(cmd == CMD_MOTEURS) {
+    else if(cmd == CMD_MOTEURS) {
       motA.changeVitesse(comm.readParam0());
       motB.changeVitesse(comm.readParam1());
     }
+    else if(cmd == CMD_DISTANCE) {
+      comm.sendMessage( CMD_DISTANCE, distanceRead(1000) );    }
   }
+}
+
+unsigned long lastEnterTime = 0;
+long _measureValue = 0;
+
+long measure(unsigned long timeout) {
+  long duration;
+  
+  if(millis() - lastEnterTime > 23) {
+    lastEnterTime = millis();
+
+    pinMode(DISTANCE_PIN, OUTPUT);
+    digitalWrite(DISTANCE_PIN, LOW);
+    delayMicroseconds(2);
+    digitalWrite(DISTANCE_PIN, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(DISTANCE_PIN, LOW);
+    pinMode(DISTANCE_PIN, INPUT);
+    duration = pulseIn(DISTANCE_PIN, HIGH, timeout);
+    _measureValue = duration;
+  }
+  else {
+    duration = _measureValue;
+  }
+  return(duration);
+}
+
+
+int distanceRead(unsigned int maxCm) {
+  long distance;
+  
+  distance = measure(maxCm * 55 + 200);
+    if(distance == 0) {
+    distance = maxCm * 58;
+  }
+  return( (int)(distance / 58.0));
 }
