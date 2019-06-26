@@ -31,6 +31,7 @@ ComBus comm;
 
 
 void setup() {
+  //Serial.begin(9600);
   // Initialisation des moteurs
   motA.begin();
   motB.begin();
@@ -63,28 +64,28 @@ void loop() {
       comm.sendMessage( CMD_ANALOG_READ, analogRead( comm.readParam0() ) );
     }
     else if(cmd == CMD_AVANCE) {
-      motA.changeVitesse(comm.readParam0());
-      motB.changeVitesse(comm.readParam0());
+      motA.changeVitesse((uint8_t)comm.readParam0());
+      motB.changeVitesse((uint8_t)comm.readParam0());
     }
     else if(cmd == CMD_RECULE) {
-      motA.changeVitesse(-comm.readParam0());
-      motB.changeVitesse(-comm.readParam0());
+      motA.changeVitesse(-(uint8_t)comm.readParam0());
+      motB.changeVitesse(-(uint8_t)comm.readParam0());
     }
     else if(cmd == CMD_GAUCHE) {
-      motA.changeVitesse(comm.readParam0());
-      motB.changeVitesse(-comm.readParam0());
+      motA.changeVitesse(-(uint8_t)comm.readParam0());
+      motB.changeVitesse((uint8_t)comm.readParam0());
     }
     else if(cmd == CMD_DROITE) {
-      motA.changeVitesse(-comm.readParam0());
-      motB.changeVitesse(comm.readParam0());
+      motA.changeVitesse((uint8_t)comm.readParam0());
+      motB.changeVitesse(-(uint8_t)comm.readParam0());
     }
     else if(cmd == CMD_STOP) {
       motA.changeVitesse(0);
       motB.changeVitesse(0);
     }
     else if(cmd == CMD_MOTEURS) {
-      motA.changeVitesse(comm.readParam0());
-      motB.changeVitesse(comm.readParam1());
+      motA.changeVitesse(2*(int16_t)comm.readParam0());
+      motB.changeVitesse(2*(int16_t)comm.readParam1());
     }
     else if(cmd == CMD_DISTANCE) {
       comm.sendMessage( CMD_DISTANCE, distanceRead(1000) );    }
